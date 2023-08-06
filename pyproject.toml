@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gedcom5"
+version = "0.1.1"
+description = "GEDCOM v5 parser"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+requires-python = ">=3.11"
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+]
+authors = [
+  {name = "David", email = "c0d3@gpobox.net"},
+]
+maintainers = [
+  {name = "David", email = "c0d3@gpobox.net"}
+]
+keywords = ["gedcom"]
+
+[project.urls]
+"Homepage" = "https://github.com/bbc6502/gedcom5"
+"Bug Tracker" = "https://github.com/bbc6502/gedcom5/issues"
+
+[tool.setuptools]
+packages = ["gedcom5"]
