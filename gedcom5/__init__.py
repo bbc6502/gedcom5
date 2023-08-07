@@ -10,7 +10,7 @@ class GEDCOM:
         self.items.append(item)
 
     def __repr__(self):
-        return f'{self.items}'
+        return str(self.items)
 
     def __len__(self):
         return len(self.items)
@@ -37,7 +37,6 @@ class GEDCOM:
 class Entry(GEDCOM):
     def __init__(self, level: int, xref_id: str = None, tag: str = None, value: str = None):
         super().__init__(level=level)
-        self.level = level
         self.xref_id = xref_id
         self.tag = tag
         self.value = value
@@ -45,12 +44,21 @@ class Entry(GEDCOM):
     def __repr__(self):
         if self.xref_id:
             if self.value:
-                return f'{self.level} {self.xref_id} {self.tag} {self.value}'
-            return f'{self.level} {self.xref_id} {self.tag}'
+                out = [f'{self.level} {self.xref_id} {self.tag} {self.value}']
+            else:
+                out = [f'{self.level} {self.xref_id} {self.tag}']
         else:
             if self.value:
-                return f'{self.level} {self.tag} {self.value}'
-            return f'{self.level} {self.tag}'
+                out = [f'{self.level} {self.tag} {self.value}']
+            else:
+                out = [f'{self.level} {self.tag}']
+        return out
+
+    def __str__(self):
+        out = [repr(self)]
+        for e in self.items:
+            out.append(str(e))
+        return '\n'.join(out)
 
 
 class GEDCOM5:
