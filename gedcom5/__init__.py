@@ -1,10 +1,10 @@
-from typing import BinaryIO
+from typing import BinaryIO, List, Optional
 
 
 class GEDCOM:
     def __init__(self, level: int = -1):
         self.level = level
-        self.items = []
+        self.items: List['Entry'] = []
 
     def append(self, item: 'Entry'):
         self.items.append(item)
@@ -18,17 +18,17 @@ class GEDCOM:
     def __iter__(self):
         return self.items.__iter__()
 
-    def find(self, tags):
+    def find(self, tags: str) -> List['Entry']:
         nodes = [self]
         for tag in tags.split('.'):
             nodes = [item for node in nodes for item in node.items if item.tag == tag]
         return nodes
 
-    def find_first(self, tags):
+    def find_first(self, tags:str, default: 'Entry' = None) -> Optional['Entry']:
         nodes = self.find(tags)
         if len(nodes) > 0:
             return nodes[0]
-        return None
+        return default
 
     def __getitem__(self, item):
         return self.items[item]
