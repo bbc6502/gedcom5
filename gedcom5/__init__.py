@@ -24,6 +24,12 @@ class GEDCOM:
             nodes = [item for node in nodes for item in node.items if item.tag == tag]
         return nodes
 
+    def find_first(self, tags):
+        nodes = self.find(tags)
+        if len(nodes) > 0:
+            return nodes[0]
+        return None
+
     def __getitem__(self, item):
         return self.items[item]
 

@@ -23,5 +23,5 @@ build:
 test-deploy: build
 	@venv/bin/python -m twine upload --repository testpypi dist/*
 
-deploy:
+deploy: build
 	@venv/bin/python -m twine upload dist/*
