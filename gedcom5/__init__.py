@@ -1,8 +1,8 @@
 from typing import BinaryIO, List, Optional
 
 
-class GEDCOM:
-    def __init__(self, level: int = -1):
+class Element:
+    def __init__(self, level: int):
         self.level = level
         self.items: List['Entry'] = []
 
@@ -34,7 +34,7 @@ class GEDCOM:
         return self.items[item]
 
 
-class Entry(GEDCOM):
+class Entry(Element):
     def __init__(self, level: int, xref_id: str = None, tag: str = None, value: str = None):
         super().__init__(level=level)
         self.xref_id = xref_id
@@ -59,6 +59,17 @@ class Entry(GEDCOM):
         for e in self.items:
             out.append(str(e))
         return '\n'.join(out)
+
+
+class GEDCOM(Element):
+    def __init__(self):
+        super().__init__(level=-1)
+        self.ref = dict()
+
+    def append(self, item: Entry):
+        super().append(item)
+        if item.xref_id is not None:
+            self.ref[item.xref_id] = item
 
 
 class GEDCOM5:
