@@ -44,14 +44,14 @@ class Entry(Element):
     def __repr__(self):
         if self.xref_id:
             if self.value:
-                out = [f'{self.level} {self.xref_id} {self.tag} {self.value}']
+                out = f'{self.level} {self.xref_id} {self.tag} {self.value}'
             else:
-                out = [f'{self.level} {self.xref_id} {self.tag}']
+                out = f'{self.level} {self.xref_id} {self.tag}'
         else:
             if self.value:
-                out = [f'{self.level} {self.tag} {self.value}']
+                out = f'{self.level} {self.tag} {self.value}'
             else:
-                out = [f'{self.level} {self.tag}']
+                out = f'{self.level} {self.tag}'
         return out
 
     def __str__(self):
