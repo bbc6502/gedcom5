@@ -5,6 +5,7 @@ class Element:
     def __init__(self, level: int):
         self.level = level
         self.items: List['Entry'] = []
+        self.found = set()
 
     def append(self, item: 'Entry'):
         self.items.append(item)
@@ -21,6 +22,7 @@ class Element:
     def find(self, tags: str) -> List['Entry']:
         nodes = [self]
         for tag in tags.split('.'):
+            self.found.add(tag)
             nodes = [item for node in nodes for item in node.items if item.tag == tag]
         return nodes
 
@@ -32,6 +34,10 @@ class Element:
 
     def __getitem__(self, item):
         return self.items[item]
+
+    def tags_not_found(self):
+        """Return a list of tags not queried via the find method"""
+        return {item.tag for item in self.items if item.tag not in self.found}
 
 
 class Entry(Element):
