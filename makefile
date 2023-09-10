@@ -14,7 +14,7 @@ requirements: venv
 	@venv/bin/pip3 install --upgrade pip -r requirements.txt
 
 test:
-	@venv/bin/pytest --cov --cov-branch
+	@venv/bin/pytest --cov --cov-branch --cov-report term-missing
 
 build:
 	@rm -fr dist
