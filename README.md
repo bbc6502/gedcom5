@@ -12,6 +12,8 @@ https://www.gedcom.org/samples.html
 
 ## Usage Example
 
+    from gedcom5.parser import GEDCOM5Parser
+
     msg = '\n'.join([
         '0 @I1@ INDI',
         '1 NAME Bob /BROWN/',
