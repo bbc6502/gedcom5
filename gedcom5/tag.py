@@ -12,7 +12,10 @@ class UnexpectedTag(RuntimeError):
 class Tag:
     """Base GEDCOM Tag representation"""
 
-    def __init__(self, level: Optional[int] = 0, parent: Optional['Tag'] = None, xref_id: str = None, tag: str = None, value: str = None):
+    def __init__(
+            self, level: Optional[int] = 0, parent: Optional['Tag'] = None,
+            xref_id: str = None, tag: str = None, value: str = None
+    ):
         self.level = level
         self.parent = parent
         self.xref_id = xref_id
@@ -63,7 +66,7 @@ class Tag:
             nodes = [item for node in nodes for item in node._items if item.tag == tag]
         return nodes
 
-    def find_first(self, tags:str, default=None) -> Optional['Tag']:
+    def find_first(self, tags: str, default=None) -> Optional['Tag']:
         nodes = self.find(tags)
         if len(nodes) > 0:
             return nodes[0]
@@ -602,8 +605,8 @@ class SourceRepositoryCitation:
 
 
 class HEAD(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.sour: Optional[SOUR] = None
         self.dest: List[DEST] = []
         self.date: Optional[DATE] = None
@@ -661,8 +664,8 @@ class HEAD(Tag):
 
 
 class SOUR(Tag, SourceRepositoryCitation, ChangeDate, NoteStructure, MultimediaLink):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         SourceRepositoryCitation.__init__(self)
         ChangeDate.__init__(self)
         NoteStructure.__init__(self)
@@ -744,8 +747,8 @@ class SOUR(Tag, SourceRepositoryCitation, ChangeDate, NoteStructure, MultimediaL
 
 
 class PAGE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -755,8 +758,8 @@ class PAGE(Tag):
 
 
 class VERS(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -766,8 +769,8 @@ class VERS(Tag):
 
 
 class NAME(Tag, PersonalNamePieces):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         PersonalNamePieces.__init__(self)
         self.type: Optional[TYPE] = None
         self.fone: List[FONE] = []
@@ -789,8 +792,8 @@ class NAME(Tag, PersonalNamePieces):
 
 
 class CORP(Tag, AddressStructure):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         AddressStructure.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -799,8 +802,8 @@ class CORP(Tag, AddressStructure):
 
 
 class DATA(Tag, NoteStructure):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         NoteStructure.__init__(self)
         self.date: Optional[DATE] = None
         self.copr: Optional[COPR] = None
@@ -830,8 +833,8 @@ class DATA(Tag, NoteStructure):
 
 
 class DATE(Tag):
-    def __init__(self, level: int, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.time: Optional[TIME] = None
         self.dates: Dict[str, datetime] = {}
         self._date: Optional[datetime] = None
@@ -925,8 +928,8 @@ class DATE(Tag):
 
 
 class COPR(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.lines: List[Union[CONT, CONC]] = []
 
     def append(self, item: Tag, strict=False):
@@ -943,8 +946,8 @@ class COPR(Tag):
 
 
 class CONT(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -954,8 +957,8 @@ class CONT(Tag):
 
 
 class CONC(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -965,8 +968,8 @@ class CONC(Tag):
 
 
 class DEST(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -976,8 +979,8 @@ class DEST(Tag):
 
 
 class TIME(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -987,8 +990,8 @@ class TIME(Tag):
 
 
 class SUBM(Tag, AddressStructure, MultimediaLink, NoteStructure, ChangeDate):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         AddressStructure.__init__(self)
         MultimediaLink.__init__(self)
         NoteStructure.__init__(self)
@@ -1023,8 +1026,8 @@ class SUBM(Tag, AddressStructure, MultimediaLink, NoteStructure, ChangeDate):
 
 
 class SUBN(Tag, NoteStructure, ChangeDate):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         NoteStructure.__init__(self)
         ChangeDate.__init__(self)
         self.subm: Optional[SUBM] = None
@@ -1065,8 +1068,8 @@ class SUBN(Tag, NoteStructure, ChangeDate):
 
 
 class FILE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.form: Optional[FORM] = None
         self.titl: Optional[TITL] = None
 
@@ -1084,8 +1087,8 @@ class FILE(Tag):
 
 
 class GEDC(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.vers: Optional[VERS] = None
         self.form: Optional[FORM] = None
 
@@ -1103,8 +1106,8 @@ class GEDC(Tag):
 
 
 class FORM(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.medi: Optional[MEDI] = None
         self.type: Optional[TYPE] = None
 
@@ -1122,8 +1125,8 @@ class FORM(Tag):
 
 
 class CHAR(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.vers: Optional[VERS] = None
 
     def append(self, item: Tag, strict=False):
@@ -1137,8 +1140,8 @@ class CHAR(Tag):
 
 
 class LANG(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1148,8 +1151,8 @@ class LANG(Tag):
 
 
 class ANCE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1159,8 +1162,8 @@ class ANCE(Tag):
 
 
 class DESC(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1170,8 +1173,8 @@ class DESC(Tag):
 
 
 class PLAC(Tag, NoteStructure):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         NoteStructure.__init__(self)
         self.form: Optional[FORM] = None
         self.fone: List[FONE] = []
@@ -1197,8 +1200,8 @@ class PLAC(Tag, NoteStructure):
 
 
 class NOTE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.lines: List[Union[CONT, CONC]] = []
         self.refn: List[REFN] = []
         self.rin: Optional[RIN] = None
@@ -1231,8 +1234,8 @@ class NOTE(Tag):
 
 
 class FAM(Tag, FamilyEventStructure, LDSSpouseSealing, ChangeDate, NoteStructure, SourceCitation, MultimediaLink):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventStructure.__init__(self)
         LDSSpouseSealing.__init__(self)
         ChangeDate.__init__(self)
@@ -1289,8 +1292,8 @@ class FAM(Tag, FamilyEventStructure, LDSSpouseSealing, ChangeDate, NoteStructure
 
 
 class RESN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1300,8 +1303,8 @@ class RESN(Tag):
 
 
 class HUSB(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.age: Optional[AGE] = None
 
     def append(self, item: Tag, strict=False):
@@ -1315,8 +1318,8 @@ class HUSB(Tag):
 
 
 class WIFE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.age: Optional[AGE] = None
 
     def append(self, item: Tag, strict=False):
@@ -1330,8 +1333,8 @@ class WIFE(Tag):
 
 
 class CHIL(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1341,8 +1344,8 @@ class CHIL(Tag):
 
 
 class NCHI(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -1351,8 +1354,8 @@ class NCHI(Tag, IndividualEventDetail):
 
 
 class REFN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.type: Optional[TYPE] = None
 
     def append(self, item: Tag, strict=False):
@@ -1366,8 +1369,8 @@ class REFN(Tag):
 
 
 class TYPE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1377,8 +1380,8 @@ class TYPE(Tag):
 
 
 class RIN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1388,8 +1391,8 @@ class RIN(Tag):
 
 
 class INDI(Tag, PersonalNameStructure, IndividualEventStructure, IndividualAttributeStructure, LDSIndividualOrdinance, ChildToFamilyLink, SpouseToFamilyLink, AssociationStructure, ChangeDate, NoteStructure, SourceCitation, MultimediaLink):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         PersonalNameStructure.__init__(self)
         IndividualEventStructure.__init__(self)
         IndividualAttributeStructure.__init__(self)
@@ -1522,8 +1525,8 @@ class INDI(Tag, PersonalNameStructure, IndividualEventStructure, IndividualAttri
 
 
 class SEX(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1533,8 +1536,8 @@ class SEX(Tag):
 
 
 class ALIA(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1544,8 +1547,8 @@ class ALIA(Tag):
 
 
 class ANCI(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1555,8 +1558,8 @@ class ANCI(Tag):
 
 
 class DESI(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1566,8 +1569,8 @@ class DESI(Tag):
 
 
 class RFN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1577,8 +1580,8 @@ class RFN(Tag):
 
 
 class AFN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1588,8 +1591,8 @@ class AFN(Tag):
 
 
 class OBJE(Tag, NoteStructure, SourceCitation, ChangeDate):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         NoteStructure.__init__(self)
         SourceCitation.__init__(self)
         ChangeDate.__init__(self)
@@ -1621,8 +1624,8 @@ class OBJE(Tag, NoteStructure, SourceCitation, ChangeDate):
 
 
 class TITL(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
         self.text: List[Union[CONC,CONT]] = []
 
@@ -1638,8 +1641,8 @@ class TITL(Tag, IndividualEventDetail):
 
 
 class REPO(Tag, AddressStructure, NoteStructure, ChangeDate):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         AddressStructure.__init__(self)
         NoteStructure.__init__(self)
         ChangeDate.__init__(self)
@@ -1672,8 +1675,8 @@ class REPO(Tag, AddressStructure, NoteStructure, ChangeDate):
 
 
 class EVEN(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
         self.role: Optional[ROLE] = None
         self.date: Optional[DATE] = None
@@ -1699,8 +1702,8 @@ class EVEN(Tag, FamilyEventDetail):
 
 
 class AGNC(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1710,8 +1713,8 @@ class AGNC(Tag):
 
 
 class AUTH(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.text: List[Union[CONC,CONT]] = []
 
     def append(self, item: Tag, strict=False):
@@ -1728,8 +1731,8 @@ class AUTH(Tag):
 
 
 class ABBR(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1739,8 +1742,8 @@ class ABBR(Tag):
 
 
 class PUBL(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.text: List[Union[CONC,CONT]] = []
 
     def append(self, item: Tag, strict=False):
@@ -1757,8 +1760,8 @@ class PUBL(Tag):
 
 
 class TEXT(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.lines: List[Union[CONT, CONC]] = []
 
     def append(self, item: Tag, strict=False):
@@ -1775,8 +1778,8 @@ class TEXT(Tag):
 
 
 class FAMF(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1786,8 +1789,8 @@ class FAMF(Tag):
 
 
 class TEMP(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1797,8 +1800,8 @@ class TEMP(Tag):
 
 
 class ORDI(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1808,8 +1811,8 @@ class ORDI(Tag):
 
 
 class ADDR(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.cont: List[CONT] = []
         self.adr1: Optional[ADR1] = None
         self.adr2: Optional[ADR2] = None
@@ -1851,8 +1854,8 @@ class ADDR(Tag):
 
 
 class ADR1(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1862,8 +1865,8 @@ class ADR1(Tag):
 
 
 class ADR2(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1873,8 +1876,8 @@ class ADR2(Tag):
 
 
 class ADR3(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1884,8 +1887,8 @@ class ADR3(Tag):
 
 
 class CITY(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1895,8 +1898,8 @@ class CITY(Tag):
 
 
 class STAE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1906,8 +1909,8 @@ class STAE(Tag):
 
 
 class POST(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1917,8 +1920,8 @@ class POST(Tag):
 
 
 class CTRY(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1928,8 +1931,8 @@ class CTRY(Tag):
 
 
 class PHON(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1939,8 +1942,8 @@ class PHON(Tag):
 
 
 class EMAIL(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1950,8 +1953,8 @@ class EMAIL(Tag):
 
 
 class FAX(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1961,8 +1964,8 @@ class FAX(Tag):
 
 
 class WWW(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1972,8 +1975,8 @@ class WWW(Tag):
 
 
 class ASSO(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.rela: Optional[RELA] = None
         self.sour: List[SOUR] = []
         self.note: List[NOTE] = []
@@ -1995,8 +1998,8 @@ class ASSO(Tag):
 
 
 class RELA(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2006,8 +2009,8 @@ class RELA(Tag):
 
 
 class CHAN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.date: Optional[DATE] = None
         self.note: List[NOTE] = []
 
@@ -2025,8 +2028,8 @@ class CHAN(Tag):
 
 
 class FAMC(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.pedi: Optional[PEDI] = None
         self.stat: Optional[STAT] = None
         self.adop: Optional[ADOP] = None
@@ -2052,8 +2055,8 @@ class FAMC(Tag):
 
 
 class FAMS(Tag, NoteStructure):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         NoteStructure.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2062,8 +2065,8 @@ class FAMS(Tag, NoteStructure):
 
 
 class PEDI(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2073,8 +2076,8 @@ class PEDI(Tag):
 
 
 class STAT(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.date: Optional[DATE] = None
 
     def append(self, item: Tag, strict=False):
@@ -2088,8 +2091,8 @@ class STAT(Tag):
 
 
 class CAUS(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2099,8 +2102,8 @@ class CAUS(Tag):
 
 
 class ANUL(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2109,8 +2112,8 @@ class ANUL(Tag, FamilyEventDetail):
 
 
 class CENS(Tag, IndividualEventDetail, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
         FamilyEventDetail.__init__(self)
 
@@ -2122,8 +2125,8 @@ class CENS(Tag, IndividualEventDetail, FamilyEventDetail):
 
 
 class DIV(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2132,8 +2135,8 @@ class DIV(Tag, FamilyEventDetail):
 
 
 class DIVF(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2142,8 +2145,8 @@ class DIVF(Tag, FamilyEventDetail):
 
 
 class ENGA(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2152,8 +2155,8 @@ class ENGA(Tag, FamilyEventDetail):
 
 
 class MARB(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2162,8 +2165,8 @@ class MARB(Tag, FamilyEventDetail):
 
 
 class MARC(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2172,8 +2175,8 @@ class MARC(Tag, FamilyEventDetail):
 
 
 class MARR(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2182,8 +2185,8 @@ class MARR(Tag, FamilyEventDetail):
 
 
 class MARL(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2192,8 +2195,8 @@ class MARL(Tag, FamilyEventDetail):
 
 
 class MARS(Tag, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         FamilyEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2202,8 +2205,8 @@ class MARS(Tag, FamilyEventDetail):
 
 
 class RELI(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2212,8 +2215,8 @@ class RELI(Tag, IndividualEventDetail):
 
 
 class CAST(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2222,8 +2225,8 @@ class CAST(Tag, IndividualEventDetail):
 
 
 class DSCR(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.text: List[Union[CONC,CONT]] = []
         IndividualEventDetail.__init__(self)
 
@@ -2239,8 +2242,8 @@ class DSCR(Tag, IndividualEventDetail):
 
 
 class EDUC(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2249,8 +2252,8 @@ class EDUC(Tag, IndividualEventDetail):
 
 
 class IDNO(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2259,8 +2262,8 @@ class IDNO(Tag, IndividualEventDetail):
 
 
 class NATI(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2269,8 +2272,8 @@ class NATI(Tag, IndividualEventDetail):
 
 
 class NMR(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2279,8 +2282,8 @@ class NMR(Tag, IndividualEventDetail):
 
 
 class OCCU(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2289,8 +2292,8 @@ class OCCU(Tag, IndividualEventDetail):
 
 
 class PROP(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2299,8 +2302,8 @@ class PROP(Tag, IndividualEventDetail):
 
 
 class RESI(Tag, IndividualEventDetail, FamilyEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
         FamilyEventDetail.__init__(self)
 
@@ -2312,8 +2315,8 @@ class RESI(Tag, IndividualEventDetail, FamilyEventDetail):
 
 
 class SSN(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2322,8 +2325,8 @@ class SSN(Tag, IndividualEventDetail):
 
 
 class FACT(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2332,8 +2335,8 @@ class FACT(Tag, IndividualEventDetail):
 
 
 class AGE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2343,8 +2346,8 @@ class AGE(Tag):
 
 
 class BIRT(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
         self.famc: Optional[FAMC] = None
 
@@ -2358,8 +2361,8 @@ class BIRT(Tag, IndividualEventDetail):
 
 
 class CHR(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
         self.famc: Optional[FAMC] = None
 
@@ -2373,8 +2376,8 @@ class CHR(Tag, IndividualEventDetail):
 
 
 class DEAT(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2383,8 +2386,8 @@ class DEAT(Tag, IndividualEventDetail):
 
 
 class BURI(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2393,8 +2396,8 @@ class BURI(Tag, IndividualEventDetail):
 
 
 class CREM(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2403,8 +2406,8 @@ class CREM(Tag, IndividualEventDetail):
 
 
 class ADOP(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
         self.famc: Optional[FAMC] = None
 
@@ -2418,8 +2421,8 @@ class ADOP(Tag, IndividualEventDetail):
 
 
 class BAPM(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2428,8 +2431,8 @@ class BAPM(Tag, IndividualEventDetail):
 
 
 class BARM(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2438,8 +2441,8 @@ class BARM(Tag, IndividualEventDetail):
 
 
 class BASM(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2448,8 +2451,8 @@ class BASM(Tag, IndividualEventDetail):
 
 
 class BLES(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2458,8 +2461,8 @@ class BLES(Tag, IndividualEventDetail):
 
 
 class CHRA(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2468,8 +2471,8 @@ class CHRA(Tag, IndividualEventDetail):
 
 
 class CONF(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2478,8 +2481,8 @@ class CONF(Tag, IndividualEventDetail):
 
 
 class FCOM(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2488,8 +2491,8 @@ class FCOM(Tag, IndividualEventDetail):
 
 
 class ORDN(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2498,8 +2501,8 @@ class ORDN(Tag, IndividualEventDetail):
 
 
 class NATU(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2508,8 +2511,8 @@ class NATU(Tag, IndividualEventDetail):
 
 
 class EMIG(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2518,8 +2521,8 @@ class EMIG(Tag, IndividualEventDetail):
 
 
 class IMMI(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2528,8 +2531,8 @@ class IMMI(Tag, IndividualEventDetail):
 
 
 class PROB(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2538,8 +2541,8 @@ class PROB(Tag, IndividualEventDetail):
 
 
 class WILL(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2547,8 +2550,8 @@ class WILL(Tag, IndividualEventDetail):
         return IndividualEventDetail.append(self, item, strict)
 
 class GRAD(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2556,8 +2559,8 @@ class GRAD(Tag, IndividualEventDetail):
         return IndividualEventDetail.append(self, item, strict)
 
 class RETI(Tag, IndividualEventDetail):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2566,8 +2569,8 @@ class RETI(Tag, IndividualEventDetail):
 
 
 class BAPL(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.date: Optional[DATE] = None
         self.temp: Optional[TEMP] = None
         self.plac: Optional[PLAC] = None
@@ -2601,8 +2604,8 @@ class BAPL(Tag):
 
 
 class CONL(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.date: Optional[DATE] = None
         self.temp: Optional[TEMP] = None
         self.plac: Optional[PLAC] = None
@@ -2636,8 +2639,8 @@ class CONL(Tag):
 
 
 class ENDL(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.date: Optional[DATE] = None
         self.temp: Optional[TEMP] = None
         self.plac: Optional[PLAC] = None
@@ -2671,8 +2674,8 @@ class ENDL(Tag):
 
 
 class SLGC(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.date: Optional[DATE] = None
         self.temp: Optional[TEMP] = None
         self.plac: Optional[PLAC] = None
@@ -2710,8 +2713,8 @@ class SLGC(Tag):
 
 
 class SLGS(Tag, NoteStructure, SourceCitation):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         NoteStructure.__init__(self)
         SourceCitation.__init__(self)
         self.date: Optional[DATE] = None
@@ -2740,8 +2743,8 @@ class SLGS(Tag, NoteStructure, SourceCitation):
 
 
 class MEDI(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2751,8 +2754,8 @@ class MEDI(Tag):
 
 
 class NPFX(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2762,8 +2765,8 @@ class NPFX(Tag):
 
 
 class GIVN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2773,8 +2776,8 @@ class GIVN(Tag):
 
 
 class NICK(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2784,8 +2787,8 @@ class NICK(Tag):
 
 
 class SPFX(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2795,8 +2798,8 @@ class SPFX(Tag):
 
 
 class SURN(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2806,8 +2809,8 @@ class SURN(Tag):
 
 
 class NSFX(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2817,8 +2820,8 @@ class NSFX(Tag):
 
 
 class FONE(Tag, PersonalNamePieces):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         PersonalNamePieces.__init__(self)
         self.type: Optional[TYPE] = None
 
@@ -2832,8 +2835,8 @@ class FONE(Tag, PersonalNamePieces):
 
 
 class ROMN(Tag, PersonalNamePieces):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         PersonalNamePieces.__init__(self)
         self.type: Optional[TYPE] = None
 
@@ -2847,8 +2850,8 @@ class ROMN(Tag, PersonalNamePieces):
 
 
 class MAP(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.lati: Optional[LATI] = None
         self.long: Optional[LONG] = None
 
@@ -2866,8 +2869,8 @@ class MAP(Tag):
 
 
 class LATI(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2877,8 +2880,8 @@ class LATI(Tag):
 
 
 class LONG(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2888,8 +2891,8 @@ class LONG(Tag):
 
 
 class ROLE(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2899,8 +2902,8 @@ class ROLE(Tag):
 
 
 class QUAY(Tag):
-    def __init__(self, level: int, parent: Tag, xref_id: str = None, value: str = None):
-        Tag.__init__(self, level, parent, xref_id, self.__class__.__name__, value)
+    def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
+        Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)

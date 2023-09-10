@@ -197,11 +197,11 @@ class GEDCOM5Parser:
                 while stack[-1].level >= level:
                     stack.pop()
                 if tag in self._tags:
-                    entry = self._tags[tag](level, stack[-1], xref_id=xref_id, value=value)
+                    entry = self._tags[tag](level=level, parent=stack[-1], xref_id=xref_id, value=value)
                 elif strict:
                     raise UnexpectedLine(line, line_num, 'Unknown tag')
                 else:
-                    entry = Tag(level, stack[-1], xref_id=xref_id, tag=tag, value=value)
+                    entry = Tag(level=level, parent=stack[-1], xref_id=xref_id, tag=tag, value=value)
                 stack[-1].append(entry, strict)
                 stack.append(entry)
                 gedcom.register(entry)
