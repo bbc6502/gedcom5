@@ -202,7 +202,7 @@ class GEDCOM5Parser:
                     raise UnexpectedLine(line, line_num, 'Unknown tag')
                 else:
                     entry = Tag(level=level, parent=stack[-1], xref_id=xref_id, tag=tag, value=value)
-                stack[-1].append(entry, strict)
+                stack[-1].append(entry, strict=strict)
                 stack.append(entry)
                 gedcom.register(entry)
             gedcom.resolve(strict=strict)
@@ -216,8 +216,8 @@ class GEDCOM5Parser:
 
     def parse_stream(self, fp: BinaryIO, strict=False) -> GEDCOM:
         doc = fp.read().decode('utf-8')
-        return self.parse_string(doc, strict)
+        return self.parse_string(doc, strict=strict)
 
     def parse_path(self, path: str, strict=False) -> GEDCOM:
         with open(path, 'rb') as fp:
-            return self.parse_stream(fp, strict)
+            return self.parse_stream(fp, strict=strict)
