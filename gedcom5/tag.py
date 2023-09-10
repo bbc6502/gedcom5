@@ -57,7 +57,7 @@ class Tag:
     def __setitem__(self, key: int, value: 'Tag'):
         self._items[key] = value
 
-    def append(self, item: 'Tag'):
+    def append(self, item: 'Tag', strict=False):
         self._items.append(item)
 
     def find(self, tags: str) -> List['Tag']:
@@ -880,7 +880,8 @@ class DATE(Tag):
             if self._date is not None:
                 self.dates[self._type] = self._date
 
-    def _parse_date(self, value: str) -> Optional[datetime]:
+    @staticmethod
+    def _parse_date(value: str) -> Optional[datetime]:
         for fmt in [
             '%d %b %Y',
             '%d %b %y',
@@ -1390,7 +1391,11 @@ class RIN(Tag):
         return False
 
 
-class INDI(Tag, PersonalNameStructure, IndividualEventStructure, IndividualAttributeStructure, LDSIndividualOrdinance, ChildToFamilyLink, SpouseToFamilyLink, AssociationStructure, ChangeDate, NoteStructure, SourceCitation, MultimediaLink):
+class INDI(
+    Tag, PersonalNameStructure, IndividualEventStructure, IndividualAttributeStructure,
+    LDSIndividualOrdinance, ChildToFamilyLink, SpouseToFamilyLink, AssociationStructure,
+    ChangeDate, NoteStructure, SourceCitation, MultimediaLink
+):
     def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
         Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         PersonalNameStructure.__init__(self)
@@ -1451,9 +1456,9 @@ class INDI(Tag, PersonalNameStructure, IndividualEventStructure, IndividualAttri
         for bapm in self.bapm:
             if bapm.date is not None and bapm.date.year is not None:
                 return bapm.date.year
-        for chr in self.chr:
-            if chr.date is not None and chr.date.year is not None:
-                return chr.date.year
+        for _chr in self.chr:
+            if _chr.date is not None and _chr.date.year is not None:
+                return _chr.date.year
         return 0
 
     def death_year(self) -> int:
@@ -1627,7 +1632,7 @@ class TITL(Tag, IndividualEventDetail):
     def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
         Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         IndividualEventDetail.__init__(self)
-        self.text: List[Union[CONC,CONT]] = []
+        self.text: List[Union[CONC, CONT]] = []
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1715,7 +1720,7 @@ class AGNC(Tag):
 class AUTH(Tag):
     def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
         Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
-        self.text: List[Union[CONC,CONT]] = []
+        self.text: List[Union[CONC, CONT]] = []
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1744,7 +1749,7 @@ class ABBR(Tag):
 class PUBL(Tag):
     def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
         Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
-        self.text: List[Union[CONC,CONT]] = []
+        self.text: List[Union[CONC, CONT]] = []
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -2227,7 +2232,7 @@ class CAST(Tag, IndividualEventDetail):
 class DSCR(Tag, IndividualEventDetail):
     def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
         Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
-        self.text: List[Union[CONC,CONT]] = []
+        self.text: List[Union[CONC, CONT]] = []
         IndividualEventDetail.__init__(self)
 
     def append(self, item: Tag, strict=False):
@@ -2549,6 +2554,7 @@ class WILL(Tag, IndividualEventDetail):
         Tag.append(self, item)
         return IndividualEventDetail.append(self, item, strict)
 
+
 class GRAD(Tag, IndividualEventDetail):
     def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):
         Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
@@ -2557,6 +2563,7 @@ class GRAD(Tag, IndividualEventDetail):
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
         return IndividualEventDetail.append(self, item, strict)
+
 
 class RETI(Tag, IndividualEventDetail):
     def __init__(self, level: Optional[int] = 0, parent: Optional[Tag] = None, xref_id: str = None, value: str = None):

@@ -357,3 +357,12 @@ class TestCase:
         ])
         gedcom = GEDCOM5Parser().parse_string(msg, strict=False)
         assert gedcom.indi[0].is_private() is False
+
+    def test_other_tag_starts(self):
+        msg = '\n'.join([
+            '0 XXXX',
+            '1 YYYY',
+        ])
+        gedcom = GEDCOM5Parser().parse_string(msg, strict=False)
+        assert len(gedcom) == 1
+        assert len(gedcom[0]) == 1
