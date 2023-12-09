@@ -776,6 +776,48 @@ class NAME(Tag, PersonalNamePieces):
         self.fone: List[FONE] = []
         self.romn: List[ROMN] = []
 
+    @property
+    def given_names(self):
+        parts = []
+        if self.npfx is not None:
+            parts.append(self.npfx.value)
+        if self.givn is not None:
+            parts.append(self.givn.value)
+        parts = [part for part in parts if part != '?' and len(part) > 0]
+        if len(parts) > 0:
+            return ' '.join(parts)
+        return None
+
+    @property
+    def family_name(self):
+        parts = []
+        if self.surn is not None:
+            parts.append(self.surn.value)
+        if self.spfx is not None:
+            parts.append(self.spfx.value)
+        parts = [part for part in parts if part != '?' and len(part) > 0]
+        if len(parts) > 0:
+            return ' '.join(parts)
+        return None
+
+    @property
+    def full_name(self):
+        parts = []
+        if self.npfx is not None:
+            parts.append(self.npfx.value)
+        if self.givn is not None:
+            parts.append(self.givn.value)
+        if self.spfx is not None:
+            parts.append(self.spfx.value)
+        if self.surn is not None:
+            parts.append(self.surn.value)
+        if self.nsfx is not None:
+            parts.append(self.nsfx.value)
+        parts = [part for part in parts if part != '?']
+        if len(parts) > 0:
+            return ' '.join(parts)
+        return None
+
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
         if isinstance(item, TYPE):
@@ -837,8 +879,9 @@ class DATE(Tag):
         Tag.__init__(self, level=level, parent=parent, xref_id=xref_id, tag=self.__class__.__name__, value=value)
         self.time: Optional[TIME] = None
         self.dates: Dict[str, datetime] = {}
-        self._date: Optional[datetime] = None
         self._type: Optional[str] = None
+        self._date: Optional[datetime] = None
+        self._without_year: Optional[str] = None
         if value is not None:
             self._parse_dates(value)
 
@@ -847,6 +890,7 @@ class DATE(Tag):
         if parts[0] in ('BEF', 'AFT', 'ABT', 'CAL', 'EST'):
             value = ' '.join(parts[1:])
             self._type = parts[0]
+            self._without_year = ' '.join(parts[0:-1])
             self._date = self._parse_date(value)
             if self._date is not None:
                 self.dates[self._type] = self._date
@@ -855,6 +899,7 @@ class DATE(Tag):
             if ndx > 0:
                 value = ' '.join(parts[1:ndx])
                 self._type = parts[0]
+                self._without_year = ' '.join(parts[0:ndx-1])
                 self._date = self._parse_date(value)
                 if self._date is not None:
                     self.dates[self._type] = self._date
@@ -867,6 +912,7 @@ class DATE(Tag):
             if ndx > 0:
                 value = ' '.join(parts[1:ndx])
                 self._type = parts[0]
+                self._without_year = ' '.join(parts[0:ndx-1])
                 self._date = self._parse_date(value)
                 if self._date is not None:
                     self.dates[self._type] = self._date
@@ -876,6 +922,7 @@ class DATE(Tag):
                     self.dates[parts[ndx]] = date
         else:
             self._type = 'ACT'
+            self._without_year = ' '.join(parts[0:-1])
             self._date = self._parse_date(value)
             if self._date is not None:
                 self.dates[self._type] = self._date
@@ -899,6 +946,16 @@ class DATE(Tag):
     @property
     def type(self):
         return self._type
+
+    @property
+    def month_name(self):
+        if self._date is None:
+            return ''
+        return self._date.strftime('%b')
+
+    @property
+    def without_year(self):
+        return self._without_year
 
     @property
     def year(self):
@@ -1209,6 +1266,20 @@ class NOTE(Tag):
         self.sour: List[SOUR] = []
         self.chan: Optional[CHAN] = None
 
+    @property
+    def note(self) -> List[str]:
+        lines: List[str] = []
+        line = self.value or ''
+        for tag in self.lines:
+            if isinstance(tag, CONC):
+                line += tag.value
+            elif isinstance(tag, CONT):
+                lines.append(line)
+                line = tag.value
+        if len(line) > 0:
+            lines.append(line)
+        return lines
+
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
         if isinstance(item, CONT):
@@ -1424,32 +1495,33 @@ class INDI(
         year_minus_100 = datetime.now().year - 100
         year_minus_60 = year_minus_100 + 40
         year_minus_140 = year_minus_100 - 40
-        if 0 < self.birth_year() <= year_minus_100:
+        if 0 < (self.birth_year or 0) <= year_minus_100:
             return False
-        if datetime.now().year - 100 < self.birth_year():
+        if datetime.now().year - 100 < (self.birth_year or 0):
             return True
-        if 0 < self.death_year() <= year_minus_60:
+        if 0 < (self.death_year or 0) <= year_minus_60:
             return False
-        if self.birth_year() == 0 and self.death_year() == 0:
+        if (self.birth_year or 0) == 0 and (self.death_year or 0) == 0:
             for famc in self.famc:
                 if isinstance(famc.ref, FAM):
                     if famc.ref.husb is not None and isinstance(famc.ref.husb.ref, INDI):
                         if famc.ref.husb.ref.is_private():
                             return True
-                        if 0 < famc.ref.husb.ref.birth_year() <= year_minus_140:
+                        if 0 < (famc.ref.husb.ref.birth_year or 0) <= year_minus_140:
                             return False
-                        if 0 < famc.ref.husb.ref.death_year() <= year_minus_100:
+                        if 0 < (famc.ref.husb.ref.death_year or 0) <= year_minus_100:
                             return False
                     if famc.ref.wife is not None and isinstance(famc.ref.wife.ref, INDI):
                         if famc.ref.wife.ref.is_private():
                             return True
-                        if 0 < famc.ref.wife.ref.birth_year() <= year_minus_140:
+                        if 0 < (famc.ref.wife.ref.birth_year or 0) <= year_minus_140:
                             return False
-                        if 0 < famc.ref.wife.ref.death_year() <= year_minus_100:
+                        if 0 < (famc.ref.wife.ref.death_year or 0) <= year_minus_100:
                             return False
         return True
 
-    def birth_year(self) -> int:
+    @property
+    def birth_year(self) -> Optional[int]:
         for birt in self.birt:
             if birt.date is not None and birt.date.year is not None:
                 return birt.date.year
@@ -1459,9 +1531,23 @@ class INDI(
         for _chr in self.chr:
             if _chr.date is not None and _chr.date.year is not None:
                 return _chr.date.year
-        return 0
+        return None
 
-    def death_year(self) -> int:
+    @property
+    def birth_place(self) -> Optional[str]:
+        for item in self.birt:
+            if item.plac is not None and item.plac.value is not None:
+                return item.plac.value
+        for item in self.bapm:
+            if item.plac is not None and item.plac.value is not None:
+                return item.plac.value
+        for item in self.chr:
+            if item.plac is not None and item.plac.value is not None:
+                return item.plac.value
+        return None
+
+    @property
+    def death_year(self) -> Optional[int]:
         for deat in self.deat:
             if deat.date is not None and deat.date.year is not None:
                 return deat.date.year
@@ -1471,7 +1557,19 @@ class INDI(
         for crem in self.crem:
             if crem.date is not None and crem.date.year is not None:
                 return crem.date.year
-        return 0
+        return None
+
+    @property
+    def family_name(self) -> Optional[str]:
+        for name in self.name:
+            return name.family_name
+        return None
+
+    @property
+    def full_name(self) -> Optional[str]:
+        for name in self.name:
+            return name.full_name
+        return None
 
     def append(self, item: Tag, strict=False):
         Tag.append(self, item)
@@ -1479,7 +1577,7 @@ class INDI(
             self.resn = item
             return True
         elif isinstance(item, SEX):
-            self.sex = None
+            self.sex = item
             return True
         elif isinstance(item, SUBM):
             self.subm.append(item)

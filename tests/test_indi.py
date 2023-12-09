@@ -164,3 +164,86 @@ class TestCase:
         gedcom = parser.parse_string(msg)
         indi = gedcom.indi[0]
         assert indi.is_private() is False
+
+    def test_birth_place(self):
+        msg = '\n'.join([
+            '0 INDI',
+            '1 BIRT',
+            '2 PLAC Melbourne',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.birth_place == 'Melbourne'
+
+    def test_birth_place_from_baptism(self):
+        msg = '\n'.join([
+            '0 INDI',
+            '1 BAPM',
+            '2 PLAC Melbourne',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.birth_place == 'Melbourne'
+
+    def test_birth_place_from_christening(self):
+        msg = '\n'.join([
+            '0 INDI',
+            '1 CHR',
+            '2 PLAC Melbourne',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.birth_place == 'Melbourne'
+
+    def test_no_birth_place(self):
+        msg = '\n'.join([
+            '0 INDI',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.birth_place is None
+
+    def test_family_name(self):
+        msg = '\n'.join([
+            '0 INDI',
+            '1 NAME',
+            '2 SURN SMITH',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.family_name == 'SMITH'
+
+    def test_no_family_name(self):
+        msg = '\n'.join([
+            '0 INDI',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.family_name is None
+
+    def test_full_name(self):
+        msg = '\n'.join([
+            '0 INDI',
+            '1 NAME',
+            '2 GIVN Joe',
+            '2 SURN SMITH',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.full_name == 'Joe SMITH'
+
+    def test_no_full_name(self):
+        msg = '\n'.join([
+            '0 INDI',
+        ])
+        parser = GEDCOM5Parser()
+        gedcom = parser.parse_string(msg)
+        indi = gedcom.indi[0]
+        assert indi.full_name is None

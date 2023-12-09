@@ -70,6 +70,22 @@ class TestCase:
         assert uut.month == 11
         assert uut.day == 13
 
+    def test_month_name(self):
+        uut = DATE(0, value='EST 13 NOV 1969')
+        assert uut.month_name == 'Nov'
+
+    def test_month_name_year_only(self):
+        uut = DATE(0, value='')
+        assert uut.month_name == ''
+
+    def test_without_year(self):
+        uut = DATE(0, value='EST 13 NOV 1969')
+        assert uut.without_year == 'EST 13 NOV'
+
+    def test_without_year_not_exists(self):
+        uut = DATE(0, value='1969')
+        assert uut.without_year == ''
+
     def test_from_to_date(self):
         uut = DATE(0, value='FROM 13 NOV 1969 TO 14 DEC 1970')
         assert uut.year == 1969
