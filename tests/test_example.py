@@ -1,19 +1,7 @@
-# GEDCOM v5
+from gedcom5.parser import GEDCOM5Parser
 
-Parser for GEDCOM v5 files
 
-## Specifications
-
-https://www.gedcom.org/gedcom.html
-
-## Samples
-
-https://www.gedcom.org/samples.html
-
-## Usage Example
-
-    from gedcom5.parser import GEDCOM5Parser
-
+def test_example():
     msg = '\n'.join([
         '0 @I1@ INDI',
         '1 NAME Bob /BROWN/',
